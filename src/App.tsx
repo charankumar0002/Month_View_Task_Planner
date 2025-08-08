@@ -4,6 +4,7 @@ import CalendarMonth from "./components/CalendarMonth";
 import { CalenderTask } from "./types/calender";
 
 const App = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [tasks] = useState<CalenderTask[]>([
     {
       id: "1",
@@ -24,9 +25,17 @@ const App = () => {
   ]);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>My Calendar</h1>
-      <CalendarMonth currentDate={new Date(2025, 7, 1)} tasks={tasks} />
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+          My Calendar
+        </h1>
+        <CalendarMonth 
+          currentDate={currentDate} 
+          onDateChange={setCurrentDate}
+          tasks={tasks} 
+        />
+      </div>
     </div>
   );
 };
