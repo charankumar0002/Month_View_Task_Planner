@@ -13,7 +13,6 @@ import {
   isSameMonth,
   isSameDay,
   format,
-  differenceInDays,
 } from "date-fns";
 import { CalenderTask } from "../types/calender";
 import TaskModal from "./TaskModal";
@@ -64,15 +63,6 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const suppressNextClickRef = useRef(false);
 
-  // Helper functions
-  const dateToIndex = (date: Date) => {
-    return differenceInDays(date, gridStart);
-  };
-
-  const indexToDate = (index: number) => {
-    return addDays(gridStart, index);
-  };
-
   const xyToDate = (clientX: number, clientY: number) => {
     const el = containerRef.current;
     if (!el) return null;
@@ -119,6 +109,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
     if (barEl) {
       // Resize existing task
       const taskId = barEl.getAttribute('data-task-id');
+      if (!taskId) return;
       const task = tasks.find(t => t.id === taskId);
       if (!task) return;
 
@@ -235,6 +226,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
     if (barEl) {
       // Edit existing task
       const taskId = barEl.getAttribute('data-task-id');
+      if (!taskId) return;
       const task = tasks.find(t => t.id === taskId);
       if (!task) return;
       
@@ -314,7 +306,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
 
   // Lane stacking to avoid overlap
   const rowLanes = useMemo(() => {
-    const perRow = {};
+    const perRow: Record<number, Array<{taskId: string, colStart: number, colEnd: number}>> = {};
     for (const task of tasks) {
       const startIndex = days.findIndex(d => isSameDay(d, task.start));
       const endIndex = days.findIndex(d => isSameDay(d, task.end));
@@ -335,9 +327,9 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
       }
     }
     
-    const laneByKey = {};
+    const laneByKey: Record<string, number> = {};
     Object.entries(perRow).forEach(([rowStr, segs]) => {
-      const lanes = [];
+      const lanes: number[] = [];
       segs.sort((a, b) => a.colStart - b.colStart);
       for (const seg of segs) {
         let placed = false;
