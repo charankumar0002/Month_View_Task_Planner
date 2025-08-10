@@ -383,7 +383,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
         const lane = rowLanes[`${task.id}:${row}`] || 0;
         const width = ((endCol - startCol + 1) * cellWidth);
         const left = startCol * cellWidth;
-        const top = row * cellHeight + 32 + lane * (barHeight + barSpacing);
+        const top = row * cellHeight + 40 + lane * (barHeight + barSpacing);
         
         bars.push(
           <div
@@ -507,12 +507,12 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
               key={i}
               className={`p-2 border-r border-b border-gray-200 last:border-r-0 transition-colors hover:bg-gray-50 ${
                 isCurrentMonth ? "bg-white" : "bg-gray-50"
-              } ${isToday ? "bg-blue-100 border-2 border-blue-500" : ""}`}
+              }`}
               style={{ minHeight: '140px' }}
             >
               <div className={`text-sm font-medium mb-1 ${
                 isCurrentMonth ? "text-gray-900" : "text-gray-400"
-              } ${isToday ? "text-blue-700 font-bold bg-blue-200 rounded-full w-6 h-6 flex items-center justify-center" : ""}`}>
+              } ${isToday ? "text-white font-bold bg-blue-600 rounded-full w-7 h-7 flex items-center justify-center " : ""}`}>
                 {format(dayDate, "d")}
               </div>
             </div>
