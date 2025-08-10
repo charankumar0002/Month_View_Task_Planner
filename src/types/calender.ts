@@ -5,6 +5,6 @@ export interface CalenderTask {
   start: Date;
   end: Date;
   allDay?: boolean;
-  category?: "work" | "personal" | "reminder";
+  category: "To Do" | "In Progress" | "Review" | "Completed";
   color?: string;
 }
